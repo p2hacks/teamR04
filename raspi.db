@@ -1,0 +1,6 @@
+/*
+ *|id(p)    | int 
+ *|latitude | str 
+ *|kongtude | str
+ *|status   | bool
+ */
