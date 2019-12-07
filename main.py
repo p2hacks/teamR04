@@ -1,7 +1,8 @@
-import sqlite3
+import flask
 
 def main():
-	return None
+	print('True')
+	return 1
 
 if __name__ == '__main__':
 	main()
