@@ -18,11 +18,7 @@ data = {
 	'tatuo': 'gomisutero',
 	'id' : 1,
 }
-headers = {
-	'Content-Type':'application/json',
-}
 
 if __name__ == '__main__':
-	req = urllib.request.Request(server_url, json.dumps(data).encode(), headers)
-
+	res = requests.post(server_url, data)
 	app.run(host='0.0.0.0')
