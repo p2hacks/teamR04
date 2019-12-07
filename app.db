@@ -1,6 +1,6 @@
 /*
- *ids
- *latitudes
- *longtudes
- *status
+ *ids        | int
+ *latitudes  | float
+ *longitudes | float
+ *statuses   | bool
  */

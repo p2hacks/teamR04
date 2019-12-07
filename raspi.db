@@ -1,6 +1,6 @@
 /*
- *|id(p)    | int 
- *|latitude | str 
- *|kongtude | str
- *|status   | bool
+ *|id(p)     | int 
+ *|latitude  | float 
+ *|longitude | float
+ *|status    | bool
  */
