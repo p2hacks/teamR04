@@ -18,6 +18,6 @@ def get_ip_address():
 	return str(socket.gethostbyname(socket.gethostname()))
 
 if __name__ == '__main__':
-	data = json.dumps({'mac_address' : get_mac_address(), 'ip_address' : get_ip_address(), 'latitude' : 11111, 'longtude' : 22222})
+	data = json.dumps({'mac_address' : get_mac_address(), 'ip_address' : get_ip_address(), 'latitude' : "11111", 'longitude' : "22222"})
 	res = requests.post(SERVER_URL, json.loads(data))
 	app.run(host='0.0.0.0')
