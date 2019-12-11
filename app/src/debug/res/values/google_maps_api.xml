@@ -1,0 +1,25 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://consol!e.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=17:87:45:87:58:31:D3:B3:7D:F5:5C:5F:4D:44:C3:11:7A:1E:0B:71%3Bcom.yowayowa.santa_emp
+
+    You can also add your credentials to an existing key, using these values:
+
+    Package name:
+    17:87:45:87:58:31:D3:B3:7D:F5:5C:5F:4D:44:C3:11:7A:1E:0B:71
+
+    SHA-1 certificate fingerprint:
+    17:87:45:87:58:31:D3:B3:7D:F5:5C:5F:4D:44:C3:11:7A:1E:0B:71
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    //AtriaのAPIです。APIキー周りでなにか問題が発生した場合はAtriaに連絡してください。
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDHD_e90zsTTPwe6Y0tRnW91NX6ipjnYpw</string>
+</resources>
