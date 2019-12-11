@@ -10,11 +10,10 @@ def create_table(c):
 	latitude TEXT, longitude TEXT)''')
 
 def insert_data(c, json_dict):
-	#print("json_dict's type is {}".format(type(json_dict)))
-	#print(json_dict['mac_address'])
 	info = (json_dict['mac_address'],json_dict['ip_address'],json_dict['latitude'],json_dict['longitude'])
 	print('info>>>{}'.format(info))
-	c.execute('INSERT INTO raspi(mac_address, ip_address, latitude, longitude) VALUES(?,?,?,?)',info)
+c.execute('INSERT INTO raspi(mac_address, ip_address, latitude, longitude) VALUES(?,?,?,?)',info)
+
 app = Flask(__name__)
 @app.route('/', methods=['GET','POST'])
 def root():
@@ -22,7 +21,6 @@ def root():
 		#TODO:send data to APP
 		return 'kotti ha GET'
 	else:
-
 		json_dict = json.loads(request.data)
 		json_dict = ast.literal_eval(json_dict)
 		print('json_dict>>>{}, {}'.format(json_dict, type(json_dict)))
@@ -38,6 +36,3 @@ def root():
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
-
-
-
