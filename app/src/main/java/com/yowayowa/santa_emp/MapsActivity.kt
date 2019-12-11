@@ -1,14 +1,15 @@
 package com.yowayowa.santa_emp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -35,9 +36,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        // Add a marker in FutureUniv. Hakodate and move the camera
+        val sumple = LatLng(41.8418174,140.7669687)
+        mMap.addMarker(MarkerOptions().position(sumple).title("はこだて未来大学"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sumple))
+        zoomMap(sumple.latitude,sumple.longitude)
+    }
+
+    private fun zoomMap(latitude: Double,longitude: Double) { // 表示する東西南北の緯度経度を設定する
+        val south = latitude * (1 - 0.00005)
+        val west = longitude * (1 - 0.00005)
+        val north = latitude * (1 + 0.00005)
+        val east = longitude * (1 + 0.00005)
+        val bounds = LatLngBounds.builder()
+            .include(LatLng(south, west))
+            .include(LatLng(north, east))
+            .build()
+        val width = resources.displayMetrics.widthPixels
+        val height = resources.displayMetrics.heightPixels
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, 0))
     }
 }
