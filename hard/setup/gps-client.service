@@ -1,0 +1,11 @@
+[Unit]
+Description = client-server
+
+[Service]
+Exec start = /opt/server.py
+Restart = alsways
+Type = simple
+After = network.target
+
+[Install]
+WantedBy = multi-user.target
