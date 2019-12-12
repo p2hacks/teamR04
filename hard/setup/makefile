@@ -1,11 +1,10 @@
-SCRIPT = ../script
+SCRIPT = ../script/
 SERVICE = gps-client.service
 
 .PHONY: install
-install: ../script/send.py ../script/server.py $(SERVICE)
-	@sudo cp -r ../script/send.py ../script/server.py /opt
-	@sudo chmod 0755 /opt/script/send.py
-	@sudo chmod 0755 /opt/script/server.py
+install: $(SCRIPT) $(SERVICE)
+	@sudo cp -r $(SCRIPT) /opt/
+	@sudo chmod 0755 /opt/script/*.py
 	@sudo cp $(SERVICE) /etc/systemd/system/
 	@echo setup done
 

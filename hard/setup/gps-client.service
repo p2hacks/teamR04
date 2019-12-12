@@ -6,6 +6,7 @@ ExecStart = python3 /opt/script/server.py
 Restart = always
 Type = simple
 After = network.target
+User = mouse
 
 [Install]
 WantedBy = multi-user.target

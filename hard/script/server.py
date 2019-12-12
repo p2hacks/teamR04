@@ -4,6 +4,7 @@ import sys
 sys.path.append('/home/mouse/.local/lib/python3/site-packages')
 from flask import Flask
 import send
+import servo
 
 app = Flask(__name__)
 
@@ -13,9 +14,15 @@ def root():
 
 @app.route("/down", methods=['GET'])
 def down():
-	print('down!!! servo!!!')
-	return 'done'
+	return servo.braker_down()
 
 if __name__ == '__main__':
-	try send.send_json()
+	cnt = 0
+	while cnt < 5:
+		try: send.send_json()
+		except:
+			cnt +=1
+			sleep(1)
+			print('try!!')
+	
 	app.run(host='0.0.0.0')
