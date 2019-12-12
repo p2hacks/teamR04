@@ -16,6 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import android.widget.Toast;
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -33,27 +34,46 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
+    private val permissionsRequestCode:Int = 1000;
+
     //権限周り
     private fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) { // パーミッションの許可を取得する
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
+        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) { // パーミッションの許可を取得する
+
+            ActivityCompat.requestPermissions(this, arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ),
-                1000
+                permissionsRequestCode
             )
         }else locationStart()
     }
+
+    //パーミッション許可を乞うダイアログから与えられた応答に対するリアクション
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            permissionsRequestCode -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    locationStart()
+                    Toast.makeText(applicationContext,"gpsの使用許可が下りました。位置情報を取得します。",Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(applicationContext,"gpsの使用許可が下りませんでした。位置情報を取得できません。",Toast.LENGTH_SHORT).show()
+                }
+                return
+            }
+
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+            }
+        }
+    }
+
     //位置情報をgps->Internetの順で取得し、マップ上に位置を表示させる
     private fun locationStart(){
         mLocationManager =
@@ -82,10 +102,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add a marker in FutureUniv.Hakodate and move the camera
-        val sumple = LatLng(41.8418174,140.7669687)
-        mMap.addMarker(MarkerOptions().position(sumple).title("はこだて未来大学"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sumple))
-        zoomMap(sumple.latitude,sumple.longitude)
+        val sample = LatLng(41.8418174,140.7669687)
+        mMap.addMarker(MarkerOptions().position(sample).title("はこだて未来大学"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sample))
+        zoomMap(sample.latitude,sample.longitude)
 
         checkLocationPermission()
     }
