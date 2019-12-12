@@ -33,8 +33,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-
-    private fun checkLocationPermittion() {
+    //権限周り
+    private fun checkLocationPermission() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -54,8 +54,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }else locationStart()
     }
-
-
+    //位置情報をgps->Internetの順で取得し、マップ上に位置を表示させる
     private fun locationStart(){
         mLocationManager =
             getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -65,7 +64,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 myLocate = mLocationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
             }
             if(mMap != null){
-                mMap.setMyLocationEnabled(true)
+                mMap.isMyLocationEnabled = true
             }
         }
     }
@@ -74,7 +73,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * we just add a marker near はこだて未来大学 in Japan.(Edited)
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -82,13 +81,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in FutureUniv. Hakodate and move the camera
+        // Add a marker in FutureUniv.Hakodate and move the camera
         val sumple = LatLng(41.8418174,140.7669687)
         mMap.addMarker(MarkerOptions().position(sumple).title("はこだて未来大学"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sumple))
         zoomMap(sumple.latitude,sumple.longitude)
 
-        checkLocationPermittion()
+        checkLocationPermission()
     }
 
     private fun zoomMap(latitude: Double,longitude: Double) { // 表示する東西南北の緯度経度を設定する
