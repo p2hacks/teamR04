@@ -23,6 +23,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private var mLocationManager: LocationManager? = null
+    private lateinit var userLocate:LatLng
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +86,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             if(mMap != null){
                 mMap.isMyLocationEnabled = true
+                userLocate = LatLng(myLocate.latitude,myLocate.longitude)
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocate))
+                zoomMap(userLocate.latitude,userLocate.longitude)
             }
         }
     }
@@ -104,8 +108,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in FutureUniv.Hakodate and move the camera
         val sample = LatLng(41.8418174,140.7669687)
         mMap.addMarker(MarkerOptions().position(sample).title("はこだて未来大学"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sample))
-        zoomMap(sample.latitude,sample.longitude)
 
         checkLocationPermission()
     }
