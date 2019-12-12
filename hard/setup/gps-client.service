@@ -2,7 +2,7 @@
 Description = client-server
 
 [Service]
-ExecStart = python3 /opt/server.py
+ExecStart = python3 /opt/script/server.py
 Restart = always
 Type = simple
 After = network.target

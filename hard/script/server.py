@@ -1,4 +1,7 @@
+#!/usr/bin/python3
 from time import sleep
+import sys
+sys.path.append('/home/mouse/.local/lib/python3/site-packages')
 from flask import Flask
 import send
 
@@ -14,5 +17,5 @@ def down():
 	return 'done'
 
 if __name__ == '__main__':
-	send.send_json()
+	try send.send_json()
 	app.run(host='0.0.0.0')
