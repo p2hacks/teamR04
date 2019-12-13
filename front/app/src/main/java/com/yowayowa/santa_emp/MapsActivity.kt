@@ -1,14 +1,7 @@
-@file:Suppress("IMPLICIT_BOXING_IN_IDENTITY_EQUALS")
-
 package com.yowayowa.santa_emp
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,15 +9,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import android.widget.Toast;
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    private var mLocationManager: LocationManager? = null
-    private lateinit var userLocate:LatLng
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,69 +24,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    private val permissionsRequestCode:Int = 1000;
-
-    //権限周り
-    private fun checkLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) { // パーミッションの許可を取得する
-
-            ActivityCompat.requestPermissions(this, arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ),
-                permissionsRequestCode
-            )
-        }else locationStart()
-    }
-
-    //パーミッション許可を乞うダイアログから与えられた応答に対するリアクション
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            permissionsRequestCode -> {
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    locationStart()
-                    Toast.makeText(applicationContext,"gpsの使用許可が下りました。位置情報を取得します。",Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(applicationContext,"gpsの使用許可が下りませんでした。位置情報を取得できません。",Toast.LENGTH_SHORT).show()
-                }
-                return
-            }
-
-            // Add other 'when' lines to check for other
-            // permissions this app might request.
-            else -> {
-                // Ignore all other requests.
-            }
-        }
-    }
-
-    //位置情報をgps->Internetの順で取得し、マップ上に位置を表示させる
-    private fun locationStart(){
-        mLocationManager =
-            getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == 0){
-            var myLocate = mLocationManager!!.getLastKnownLocation("gps")
-            if(myLocate == null){
-                myLocate = mLocationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-            }
-            if(mMap != null){
-                mMap.isMyLocationEnabled = true
-                userLocate = LatLng(myLocate.latitude,myLocate.longitude)
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(userLocate))
-                zoomMap(userLocate.latitude,userLocate.longitude)
-            }
-        }
-    }
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near はこだて未来大学 in Japan.(Edited)
+     * we just add a marker near Sydney, Australia.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -105,11 +36,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in FutureUniv.Hakodate and move the camera
-        val sample = LatLng(41.8418174,140.7669687)
-        mMap.addMarker(MarkerOptions().position(sample).title("はこだて未来大学"))
-
-        checkLocationPermission()
+        // Add a marker in FutureUniv. Hakodate and move the camera
+        val sumple = LatLng(41.8418174,140.7669687)
+        mMap.addMarker(MarkerOptions().position(sumple).title("はこだて未来大学"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sumple))
+        zoomMap(sumple.latitude,sumple.longitude)
     }
 
     private fun zoomMap(latitude: Double,longitude: Double) { // 表示する東西南北の緯度経度を設定する
