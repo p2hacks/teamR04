@@ -16,7 +16,6 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.webkit.WebChromeClient
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,7 +25,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +37,8 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private var mLocationManager: LocationManager? = null
     private lateinit var userLocate: LatLng
+
+    private var childLocates:MutableList<childLocationClass> = mutableListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -199,7 +199,6 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
     }
 
     fun getJSONData(){
-        var ls:MutableList<childLocationClass> = mutableListOf()
         val service = createService()
         service.API()
             .enqueue(object : Callback<List<childLocationClass>?> {
@@ -208,14 +207,14 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
                         var ticker = response.body()
                         if(ticker != null) {
                             for (i in 0 until ticker.size) {
-                                ls.add(childLocationClass(
+                                childLocates.add(childLocationClass(
                                     ticker[i].id,
                                     ticker[i].latitude,
                                     ticker[i].longitude
                                 ))
                             }
-                            Toast.makeText(applicationContext,ls[0].toString(),Toast.LENGTH_SHORT).show()
                         }
+                        addChildrenMarker()
                     }else {
                         Toast.makeText(applicationContext,"JSON取得失敗.",Toast.LENGTH_SHORT).show()
                     }
@@ -234,5 +233,17 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
             .build()
       
         return retro.create(API_Interface.API_getall::class.java)
+    }
+
+    //childLocatesに格納された位置情報らをピンとして配置する
+    fun addChildrenMarker(){
+        for (item in childLocates){
+            val lati = item.latitude
+            val log = item.longitude
+            Log.d("Atria",lati.toString())
+            Log.d("Atria",log.toString())
+            val tmp = LatLng(item.latitude.toDouble(),item.longitude.toDouble())
+            mMap.addMarker(MarkerOptions().position(tmp).title(item.id.toString()))
+        }
     }
 }
