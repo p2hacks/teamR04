@@ -15,7 +15,11 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
+import android.webkit.WebChromeClient
+import android.widget.CompoundButton
+import android.widget.Switch
 import android.widget.Toast
+import android.widget.ToggleButton
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -24,6 +28,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.*
 
 class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
 
@@ -34,7 +39,7 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//Maps
+        //Maps
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_option_drawer)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -66,7 +71,23 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        //check toggle
+       val  switchemp= Switch(this)
+        switchemp.setOnCheckedChangeListener({button, isChecked ->
+            val text = if (isChecked) "checked" else "unchecked"
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        })
+
+        val menuItem1 = navView.menu.findItem(R.id.app_bar_switch)
+        menuItem1.actionView = switchemp
+
+
+       
+
+
     }
+
     //Maps
     private val permissionsRequestCode:Int = 1000;
 
@@ -84,6 +105,7 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
             )
         }else locationStart()
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -162,35 +184,6 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
     }
 }
 
-//Maps
 
-
-/*
-override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.fragment_home)
-    // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-    val mapFragment = supportFragmentManager
-        .findFragmentById(R.id.map) as SupportMapFragment
-    mapFragment.getMapAsync(this)
-}
-*/
-//private val permissionsRequestCode:Int = 1000;
-
-//権限周り
-/*
-private fun checkLocationPermission() {
-    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-        != PackageManager.PERMISSION_GRANTED) { // パーミッションの許可を取得する
-
-        ActivityCompat.requestPermissions(this, arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ),
-            permissionsRequestCode
-        )
-    }else locationStart()
-}*/
 
 
