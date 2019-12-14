@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -16,7 +17,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import android.widget.Toast;
+import android.widget.Toast
+import org.json.JSONArray
+import org.json.JSONException
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -33,6 +36,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        JSONRead()
     }
 
     private val permissionsRequestCode:Int = 1000;
@@ -124,5 +128,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val width = resources.displayMetrics.widthPixels
         val height = resources.displayMetrics.heightPixels
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, 0))
+    }
+
+    //JSON
+    //ごりごりのヤクザコード.これはだめな例です.
+    private fun JSONRead(){
+        val sampleJSON:String ="[{\"id\":1,\"latitude\":41.8418174,\"longitude\":140.7669687},{\"id\":2,\"latitude\":41.7969778,\"longitude\":140.7547704}]"
+        var ls = arrayListOf<childLocationClass>()
+        try {
+            val obj = JSONArray(sampleJSON)
+            for (i in 0 until obj.length()){
+                var tmp = obj.getJSONObject(i)
+                ls.add(childLocationClass(tmp.getString("id").toInt(),tmp.getString("latitude").toFloat(),tmp.getString("longitude").toFloat()))
+            }
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            Log.d("Atria",e.toString())
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+        }
     }
 }
