@@ -16,13 +16,18 @@ def root():
 def down():
 	return servo.braker_down()
 
+@app.route("/get_data", methods=['GET'])
+def get_data():
+	return send.make_json_data()
+
 if __name__ == '__main__':
 	cnt = 0
 	while cnt < 5:
-		try: send.send_json()
+		try: 
+			send.send_json()
+			cnt += 5
 		except:
-			cnt +=1
 			sleep(1)
+			cnt += 1
 			print('try!!')
-	
 	app.run(host='0.0.0.0')

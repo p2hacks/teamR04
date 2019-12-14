@@ -11,6 +11,20 @@ def get_mac_address():
 def get_ip_address():
 	return str(socket.gethostbyname(socket.gethostname()))
 
-def send_json():
+def make_json_data():
 	data = json.dumps({'mac_address' : get_mac_address(), 'ip_address' : get_ip_address(), 'latitude' : '11111.0', 'longitude' : '22222.0'})
-	res = requests.post(SERVER_URL, data=json.dumps(data), headers={'content-type': 'application/json'})
+	
+	#data = json.dumps({'mac_address' : 'mac3', 'ip_address' : get_ip_address(), 'latitude' : '35.41', 'longitude' : '139.45'})
+	return data
+
+def send_json():
+	head = {'content-type': 'application/json'}
+	res = requests.post(SERVER_URL+'set_info', data=json.dumps(make_json_data()), headers=head)
+
+def get_status():
+	res = requests.post(SERVER_URL+'status', data=get_mac_address())
+	return res
+
+def test():
+	res = requests.post(SERVER_URL+'status',data=get_mac_address())
+	return res
