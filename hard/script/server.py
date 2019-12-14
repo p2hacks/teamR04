@@ -25,7 +25,7 @@ if __name__ == '__main__':
 	while cnt < 5:
 		try: 
 			send.send_json()
-			break
+			cnt += 5
 		except:
 			sleep(1)
 			cnt += 1
