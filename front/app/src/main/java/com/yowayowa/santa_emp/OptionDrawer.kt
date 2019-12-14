@@ -227,14 +227,14 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
     }
 
     fun Valus(){
-        val service = createService().create(API_Interface.API_Valus::class.java)
+        val service = createService().create(API_Interface.API_valus::class.java)
         service.API()
-            .enqueue(object : Callback<Boolean?> {
-                override fun onResponse(call: Call<Boolean?>, response: Response<Boolean?>) {
+            .enqueue(object : Callback<waitorGoClass?> {
+                override fun onResponse(call: Call<waitorGoClass?>, response: Response<waitorGoClass?>) {
                     if(response.isSuccessful){
                         var ticker = response.body()
                         if(ticker != null) {
-                            if (ticker){
+                            if (ticker.status){
                                 Toast.makeText(applicationContext,"return GO.",Toast.LENGTH_SHORT).show()
                             }else{
                                 Toast.makeText(applicationContext,"return WAIT.",Toast.LENGTH_SHORT).show()
@@ -245,7 +245,7 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
                     }
                 }
 
-                override fun onFailure(call: Call<Boolean?>, t: Throwable) {
+                override fun onFailure(call: Call<waitorGoClass?>, t: Throwable) {
                     Toast.makeText(applicationContext,"エラー.",Toast.LENGTH_SHORT).show()
                 }
             } )

@@ -18,9 +18,9 @@ class API_Interface{
         fun API(): Call<childLocationClass?/*型自由*/>
     }
 
-    interface API_Valus{
+    interface API_valus{
         @GET("valus")
-        fun API(): Call<Boolean>
+        fun API(): Call<waitorGoClass>
     }
 
 }
