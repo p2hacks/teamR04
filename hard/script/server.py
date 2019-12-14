@@ -25,9 +25,9 @@ if __name__ == '__main__':
 	while cnt < 5:
 		try: 
 			send.send_json()
+			break
 		except:
-			cnt +=1
 			sleep(1)
+			cnt += 1
 			print('try!!')
-	
 	app.run(host='0.0.0.0')
