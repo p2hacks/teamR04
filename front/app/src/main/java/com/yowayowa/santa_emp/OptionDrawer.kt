@@ -25,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.yowayowa.santa_emp.ui.dialog.kokudoFrangment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,6 +50,9 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapw) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        val dialog = kokudoFrangment()
+        dialog.show(supportFragmentManager, "simple")
 
         //Option
        // super.onCreate(savedInstanceState)
@@ -100,6 +104,8 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
            }
            true
        }
+
+
     }
 
 
