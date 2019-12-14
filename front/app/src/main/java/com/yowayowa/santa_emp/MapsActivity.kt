@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -16,7 +18,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
-import android.widget.Toast;
+import org.json.JSONArray
+import org.json.JSONException
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -33,6 +41,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        getJSONData()
     }
 
     private val permissionsRequestCode:Int = 1000;
@@ -67,10 +76,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 return
             }
 
-            // Add other 'when' lines to check for other
-            // permissions this app might request.
-            else -> {
-                // Ignore all other requests.
+            else ->{
+
             }
         }
     }
@@ -125,4 +132,43 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val height = resources.displayMetrics.heightPixels
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, 0))
     }
+
+    fun getJSONData(){
+        var ls:MutableList<childLocationClass> = mutableListOf()
+        val service = createService()
+        service.API()
+            .enqueue(object :Callback<List<childLocationClass>?>{
+                override fun onResponse(call: Call<List<childLocationClass>?>, response: Response<List<childLocationClass>?>) {
+                    if(response.isSuccessful){
+                        var ticker = response.body()
+                        if(ticker != null) {
+                            for (i in 0 until ticker.size) {
+                                ls.add(childLocationClass(
+                                    ticker[i].id,
+                                    ticker[i].latitude,
+                                    ticker[i].longitude
+                                ))
+                            }
+                        }
+                    }else {
+                        Toast.makeText(applicationContext,"JSON取得失敗.",Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<List<childLocationClass>?>, t: Throwable) {
+                    Toast.makeText(applicationContext,"エラー.",Toast.LENGTH_SHORT).show()
+                }
+            } )
+    }
+
+    fun createService(): API_Interface.API_getall {
+        val url = "http://133.242.224.119:5000/"
+        val retro = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        return retro.create(API_Interface.API_getall::class.java)
+    }
+
 }

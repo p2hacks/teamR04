@@ -27,6 +27,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
 
@@ -70,7 +75,6 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
         //トグルスイッチのハンドラ
        val  switchemp = Switch(this)
         switchemp.setOnCheckedChangeListener({button, isChecked ->
@@ -95,6 +99,7 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
            }
            true
        }
+        getJSONData()
     }
 
 
@@ -192,8 +197,42 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
         val height = resources.displayMetrics.heightPixels
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, 0))
     }
+
+    fun getJSONData(){
+        var ls:MutableList<childLocationClass> = mutableListOf()
+        val service = createService()
+        service.API()
+            .enqueue(object : Callback<List<childLocationClass>?> {
+                override fun onResponse(call: Call<List<childLocationClass>?>, response: Response<List<childLocationClass>?>) {
+                    if(response.isSuccessful){
+                        var ticker = response.body()
+                        if(ticker != null) {
+                            for (i in 0 until ticker.size) {
+                                ls.add(childLocationClass(
+                                    ticker[i].id,
+                                    ticker[i].latitude,
+                                    ticker[i].longitude
+                                ))
+                            }
+                            Toast.makeText(applicationContext,ls[0].toString(),Toast.LENGTH_SHORT).show()
+                        }
+                    }else {
+                        Toast.makeText(applicationContext,"JSON取得失敗.",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onFailure(call: Call<List<childLocationClass>?>, t: Throwable) {
+                    Toast.makeText(applicationContext,"エラー.",Toast.LENGTH_SHORT).show()
+                }
+            } )
+    }
+
+    fun createService(): API_Interface.API_getall {
+        val url = "http://133.242.224.119:5000/"
+        val retro = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+      
+        return retro.create(API_Interface.API_getall::class.java)
+    }
 }
-
-
-
-
