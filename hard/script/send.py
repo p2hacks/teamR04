@@ -12,9 +12,7 @@ def get_ip_address():
 	return str(socket.gethostbyname(socket.gethostname()))
 
 def make_json_data():
-	data = json.dumps({'mac_address' : get_mac_address(), 'ip_address' : get_ip_address(), 'latitude' : '11111.0', 'longitude' : '22222.0'})
-	
-	#data = json.dumps({'mac_address' : 'mac3', 'ip_address' : get_ip_address(), 'latitude' : '35.41', 'longitude' : '139.45'})
+	data = json.dumps({'mac_address' : get_mac_address(), 'ip_address' : get_ip_address(), 'latitude' : '41.84', 'longitude' : '140.76'})
 	return data
 
 def send_json():
@@ -28,3 +26,4 @@ def get_status():
 def test():
 	res = requests.post(SERVER_URL+'status',data=get_mac_address())
 	return res
+
