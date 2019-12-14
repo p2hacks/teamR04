@@ -93,7 +93,7 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
                }
                R.id.nav_valus ->{
                    Toast.makeText(this,"時間だ、答えを聞こう。",Toast.LENGTH_SHORT).show()
-
+                   Valus()
                }
 
 
