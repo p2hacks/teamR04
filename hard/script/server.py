@@ -6,7 +6,8 @@ import servo
 def main():
 	try:
 		res = send.get_status()
-		if res.json()['status'] == 'go':
+		print(res.json()['status'])
+                if res.json()['status'] == 'go':
 			servo.down()
 	except:
 		sleep(1)

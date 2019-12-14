@@ -1,11 +1,11 @@
 [Unit]
 Description = client-server
+After = network.target
 
 [Service]
 ExecStart = python3 /opt/script/server.py
 Restart = always
 Type = simple
-After = network.target
 User = pi
 
 [Install]
