@@ -19,7 +19,7 @@ class API_Interface{
     }
 
     interface API_Valus{
-        @GET("Valus")
+        @GET("valus")
         fun API(): Call<Boolean>
     }
 
