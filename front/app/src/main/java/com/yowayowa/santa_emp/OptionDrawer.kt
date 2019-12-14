@@ -72,7 +72,7 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        getJSONData()
+        getAllJSONData()
     }
     //Maps
     private val permissionsRequestCode:Int = 1000;
@@ -168,9 +168,9 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, 0))
     }
 
-    fun getJSONData(){
+    fun getAllJSONData(){
         var ls:MutableList<childLocationClass> = mutableListOf()
-        val service = createService()
+        val service = createService().create(API_Interface.API_getall::class.java)
         service.API()
             .enqueue(object : Callback<List<childLocationClass>?> {
                 override fun onResponse(call: Call<List<childLocationClass>?>, response: Response<List<childLocationClass>?>) {
@@ -197,13 +197,12 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
             } )
     }
 
-    fun createService(): API_Interface.API_getall {
+    fun createService():Retrofit {
         val url = "http://133.242.224.119:5000/"
         val retro = Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-        return retro.create(API_Interface.API_getall::class.java)
+        return retro
     }
 }
