@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -16,10 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.webkit.WebChromeClient
-import android.widget.CompoundButton
-import android.widget.Switch
-import android.widget.Toast
-import android.widget.ToggleButton
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -72,21 +70,33 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        //check toggle
-       val  switchemp= Switch(this)
+
+        //トグルスイッチのハンドラ
+       val  switchemp = Switch(this)
         switchemp.setOnCheckedChangeListener({button, isChecked ->
             val text = if (isChecked) "checked" else "unchecked"
             Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
         })
-
         val menuItem1 = navView.menu.findItem(R.id.app_bar_switch)
         menuItem1.actionView = switchemp
 
+        //ValusButtonのハンドラ
+       navView.setNavigationItemSelectedListener {
+           when(it.itemId){
+               R.id.app_bar_switch ->{
+                   Toast.makeText(this,"hoge",Toast.LENGTH_SHORT).show()
+               }
+               R.id.nav_valus ->{
+                   Toast.makeText(this,"時間だ、答えを聞こう。",Toast.LENGTH_SHORT).show()
 
-       
+               }
 
 
+           }
+           true
+       }
     }
+
 
     //Maps
     private val permissionsRequestCode:Int = 1000;

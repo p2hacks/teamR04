@@ -13,8 +13,8 @@
     tools:openDrawer="start">
     <include
         layout="@layout/app_bar_option_drawer"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <fragment
         android:id="@+id/mapw"
