@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/app_bar_switch"
+            android:title="Switch EMP"
+            app:actionLayout="@layout/switch_item" />
+        <item
+            android:id="@+id/app_bar_flying"
+            android:title="Flying mode"
+            app:actionLayout="@layout/switch_item" />
+        <item
+            android:id="@+id/app_bar_autoemp"
+            android:title="Auto EMP"
+            app:actionLayout="@layout/switch_item" />
+    </group>
+
+    <item android:title="DestroyOption">
+        <menu>
+            <item
+                android:id="@+id/nav_valus"
+                android:icon="@drawable/valus"
+                android:title="Valus" />
+        </menu>
+    </item>
+
+</menu>
