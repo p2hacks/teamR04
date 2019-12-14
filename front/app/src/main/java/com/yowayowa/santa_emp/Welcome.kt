@@ -18,10 +18,12 @@ class Welcome : WelcomeActivity() {
             .defaultBackgroundColor(BackgroundColor(Color.RED))
             .page(TitlePage(R.drawable.ic_appicon, "Santa EMP System"))
             .page(BasicPage(
-                R.drawable.nearpin,
+                R.drawable.ic_light,
                 "サンタのためのEMP",
                 "快適なプレゼント配りをあなたに")
-                .background(BackgroundColor(Color.DKGRAY)))
+                .background(BackgroundColor(Color.YELLOW))
+                .headerColor(Color.BLACK)
+                .descriptionColor(Color.BLACK))
             .page(BasicPage(
                 android.R.drawable.ic_lock_power_off,
                 "Santa emp はブレーカーを落とします",
