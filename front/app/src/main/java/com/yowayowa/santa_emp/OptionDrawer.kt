@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -15,7 +16,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -37,9 +38,11 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
     private var mLocationManager: LocationManager? = null
     private lateinit var userLocate: LatLng
 
+    private var childLocates:MutableList<childLocationClass> = mutableListOf()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//Maps
+        //Maps
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_option_drawer)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -73,7 +76,33 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
         navView.setupWithNavController(navController)
 
         getAllJSONData()
+        //トグルスイッチのハンドラ
+       val  switchemp = Switch(this)
+        switchemp.setOnCheckedChangeListener({button, isChecked ->
+            val text = if (isChecked) "checked" else "unchecked"
+            Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        })
+        val menuItem1 = navView.menu.findItem(R.id.app_bar_switch)
+        menuItem1.actionView = switchemp
+
+        //ValusButtonのハンドラ
+       navView.setNavigationItemSelectedListener {
+           when(it.itemId){
+               R.id.app_bar_switch ->{
+                   Toast.makeText(this,"hoge",Toast.LENGTH_SHORT).show()
+               }
+               R.id.nav_valus ->{
+                   Toast.makeText(this,"時間だ、答えを聞こう。",Toast.LENGTH_SHORT).show()
+
+               }
+
+
+           }
+           true
+       }
     }
+
+
     //Maps
     private val permissionsRequestCode:Int = 1000;
 
@@ -91,6 +120,7 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
             )
         }else locationStart()
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -178,19 +208,18 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
                         var ticker = response.body()
                         if(ticker != null) {
                             for (i in 0 until ticker.size) {
-                                ls.add(childLocationClass(
+                                childLocates.add(childLocationClass(
                                     ticker[i].id,
                                     ticker[i].latitude,
                                     ticker[i].longitude
                                 ))
                             }
-                            Toast.makeText(applicationContext,ls[0].toString(),Toast.LENGTH_SHORT).show()
                         }
+                        addChildrenMarker()
                     }else {
                         Toast.makeText(applicationContext,"JSON取得失敗.",Toast.LENGTH_SHORT).show()
                     }
                 }
-
                 override fun onFailure(call: Call<List<childLocationClass>?>, t: Throwable) {
                     Toast.makeText(applicationContext,"エラー.",Toast.LENGTH_SHORT).show()
                 }
@@ -230,5 +259,17 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retro
+    }
+
+    //childLocatesに格納された位置情報らをピンとして配置する
+    fun addChildrenMarker(){
+        for (item in childLocates){
+            val lati = item.latitude
+            val log = item.longitude
+            Log.d("Atria",lati.toString())
+            Log.d("Atria",log.toString())
+            val tmp = LatLng(item.latitude.toDouble(),item.longitude.toDouble())
+            mMap.addMarker(MarkerOptions().position(tmp).title(item.id.toString()))
+        }
     }
 }
