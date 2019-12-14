@@ -2,6 +2,7 @@ import json
 import sqlite3
 from flask import Flask, request
 import ast
+import requests
 
 def create_table(c):
 	c.execute('''
@@ -29,11 +30,10 @@ def update_data(c, json_dict):
 
 def exist_data(c, json_dict):
 	info = (json_dict['mac_address'],)
-	# count the mac address 
-	cnt = c.execute('SELECT COUNT(mac_address = ?) FROM raspi',info)
-	if tuple(cnt)[0][0]:
-		return True
-	return False
+	cnt = c.execute('SELECT COUNT(CASE WHEN mac_address = ? THEN "1" ELSE NULL END) FROM raspi;',info)
+	cnt = tuple(cnt)[0][0]
+	print('cnt>>{}'.format(cnt))
+	return True if cnt else False
 
 #all delete
 def delete(c, json_dict):
