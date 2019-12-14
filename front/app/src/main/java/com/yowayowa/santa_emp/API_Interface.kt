@@ -12,10 +12,15 @@ class API_Interface{
         fun API(): Call<List<childLocationClass>>
     }
 
-
+    //example
     interface API_GetRazpi {
         @GET("get_data")
         fun API(): Call<childLocationClass?/*型自由*/>
+    }
+
+    interface API_Valus{
+        @GET("Valus")
+        fun API(): Call<Boolean>
     }
 
 }

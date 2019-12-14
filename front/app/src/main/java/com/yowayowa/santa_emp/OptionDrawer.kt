@@ -75,6 +75,7 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        getAllJSONData()
         //トグルスイッチのハンドラ
        val  switchemp = Switch(this)
         switchemp.setOnCheckedChangeListener({button, isChecked ->
@@ -92,14 +93,13 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
                }
                R.id.nav_valus ->{
                    Toast.makeText(this,"時間だ、答えを聞こう。",Toast.LENGTH_SHORT).show()
-
+                   Valus()
                }
 
 
            }
            true
        }
-        getJSONData()
     }
 
 
@@ -198,8 +198,9 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, 0))
     }
 
-    fun getJSONData(){
-        val service = createService()
+    fun getAllJSONData(){
+        var ls:MutableList<childLocationClass> = mutableListOf()
+        val service = createService().create(API_Interface.API_getall::class.java)
         service.API()
             .enqueue(object : Callback<List<childLocationClass>?> {
                 override fun onResponse(call: Call<List<childLocationClass>?>, response: Response<List<childLocationClass>?>) {
@@ -225,14 +226,39 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
             } )
     }
 
-    fun createService(): API_Interface.API_getall {
+    fun Valus(){
+        val service = createService().create(API_Interface.API_Valus::class.java)
+        service.API()
+            .enqueue(object : Callback<Boolean?> {
+                override fun onResponse(call: Call<Boolean?>, response: Response<Boolean?>) {
+                    if(response.isSuccessful){
+                        var ticker = response.body()
+                        if(ticker != null) {
+                            if (ticker){
+                                Toast.makeText(applicationContext,"return GO.",Toast.LENGTH_SHORT).show()
+                            }else{
+                                Toast.makeText(applicationContext,"return WAIT.",Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }else {
+                        Toast.makeText(applicationContext,"JSON取得失敗.",Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Boolean?>, t: Throwable) {
+                    Toast.makeText(applicationContext,"エラー.",Toast.LENGTH_SHORT).show()
+                }
+            } )
+    }
+
+
+    fun createService():Retrofit {
         val url = "http://133.242.224.119:5000/"
         val retro = Retrofit.Builder()
             .baseUrl(url)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-      
-        return retro.create(API_Interface.API_getall::class.java)
+        return retro
     }
 
     //childLocatesに格納された位置情報らをピンとして配置する
