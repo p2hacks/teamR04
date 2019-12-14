@@ -22,14 +22,14 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import com.google.android.gms.maps.model.*
 
 class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
 
@@ -263,13 +263,19 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
 
     //childLocatesに格納された位置情報らをピンとして配置する
     fun addChildrenMarker(){
+        //アイコン設定用
+        //独自ピンイラストのリサイズ処理
+        var b:Bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.housepin)
+        var smallMarker:Bitmap = Bitmap.createScaledBitmap(b,60,100,false)
+        val icon:BitmapDescriptor = BitmapDescriptorFactory.fromBitmap(smallMarker)
+
         for (item in childLocates){
             val lati = item.latitude
             val log = item.longitude
             Log.d("Atria",lati.toString())
             Log.d("Atria",log.toString())
             val tmp = LatLng(item.latitude.toDouble(),item.longitude.toDouble())
-            mMap.addMarker(MarkerOptions().position(tmp).title(item.id.toString()))
+            mMap.addMarker(MarkerOptions().position(tmp).title(item.id.toString()).icon(icon))
         }
     }
 }
