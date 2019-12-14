@@ -197,6 +197,32 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
             } )
     }
 
+    fun Valus(){
+        val service = createService().create(API_Interface.API_Valus::class.java)
+        service.API()
+            .enqueue(object : Callback<Boolean?> {
+                override fun onResponse(call: Call<Boolean?>, response: Response<Boolean?>) {
+                    if(response.isSuccessful){
+                        var ticker = response.body()
+                        if(ticker != null) {
+                            if (ticker){
+                                Toast.makeText(applicationContext,"return GO.",Toast.LENGTH_SHORT).show()
+                            }else{
+                                Toast.makeText(applicationContext,"return WAIT.",Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }else {
+                        Toast.makeText(applicationContext,"JSON取得失敗.",Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Boolean?>, t: Throwable) {
+                    Toast.makeText(applicationContext,"エラー.",Toast.LENGTH_SHORT).show()
+                }
+            } )
+    }
+
+
     fun createService():Retrofit {
         val url = "http://133.242.224.119:5000/"
         val retro = Retrofit.Builder()
