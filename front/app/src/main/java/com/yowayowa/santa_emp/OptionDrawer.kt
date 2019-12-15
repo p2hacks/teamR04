@@ -112,9 +112,14 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
     private fun kokudoDialog(){
         val alertDialog :AlertDialog.Builder = AlertDialog.Builder(this)
         alertDialog.setIcon(R.drawable.appicon)   //アイコン設定
-            .setTitle("kokudo")      //タイトル設定
-            .setMessage("hoge")  //内容(メッセージ)設定
-            .setPositiveButton("OK"){ dialog, which -> }
+            .setTitle("許可申請")      //タイトル設定
+            .setMessage("国土交通省に許可を得ましたか")  //内容(メッセージ)設定
+            .setPositiveButton("いいえ"){ dialog, which ->
+                Toast.makeText(applicationContext,"地上を走行します。飛行は不可能です。",Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("はい"){ dialog, which ->
+                Toast.makeText(applicationContext,"飛行を許可されています",Toast.LENGTH_SHORT).show()
+            }
             .show()
     }
 
