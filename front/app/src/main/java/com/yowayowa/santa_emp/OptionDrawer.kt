@@ -199,11 +199,6 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
-        // Add a marker in FutureUniv.Hakodate and move the camera
-        val sample = LatLng(41.8418174,140.7669687)
-        mMap.addMarker(MarkerOptions().position(sample).title("はこだて未来大学"))
-
         checkLocationPermission()
     }
 
