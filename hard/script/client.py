@@ -12,7 +12,6 @@ def main():
                 servo.down()
 	except:
             sleep(1)
-            continue
 
 if __name__ == '__main__':
 	servo.release()
