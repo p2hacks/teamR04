@@ -2,6 +2,7 @@ package com.yowayowa.santa_emp
 
 import android.Manifest
 import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
@@ -30,6 +31,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import androidx.appcompat.app.AlertDialog
+import com.google.android.gms.maps.model.*
+import java.util.*
 
 class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
 
@@ -100,6 +106,17 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
            }
            true
        }
+        kokudoDialog()
+    }
+
+    private fun kokudoDialog(){
+        val alertDialog :AlertDialog.Builder = AlertDialog.Builder(this)
+        alertDialog.setIcon(R.drawable.appicon)   //アイコン設定
+            .setTitle("kokudo")      //タイトル設定
+            .setMessage("hoge")  //内容(メッセージ)設定
+            .setPositiveButton("OK"){ dialog, which -> }
+            .show()
+
     }
 
 
