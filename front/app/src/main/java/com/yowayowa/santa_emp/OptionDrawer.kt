@@ -34,6 +34,7 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.maps.model.*
 import java.util.*
 import com.google.android.gms.maps.model.*
+import com.yowayowa.santa_emp.Welcome.Companion.showForcibly
 import com.yowayowa.santa_emp.Welcome.Companion.showIfNeeded
 
 class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
@@ -105,7 +106,8 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
            }
            true
        }
-        showIfNeeded(this,savedInstanceState)
+        //showIfNeeded(this,savedInstanceState)
+        showForcibly(this)
         kokudoDialog()
     }
 
