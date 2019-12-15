@@ -30,6 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import com.google.android.gms.maps.model.*
+import com.yowayowa.santa_emp.Welcome.Companion.showForcibly
 import com.yowayowa.santa_emp.Welcome.Companion.showIfNeeded
 
 class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
@@ -101,7 +102,8 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
            }
            true
        }
-        showIfNeeded(this,savedInstanceState)
+        //showIfNeeded(this,savedInstanceState)
+        showForcibly(this)
     }
 
 

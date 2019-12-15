@@ -11,6 +11,10 @@ class Welcome : WelcomeActivity() {
         fun showIfNeeded(activity: Activity, savedInstanceState: Bundle?) {
             WelcomeHelper(activity, Welcome::class.java).show(savedInstanceState)
         }
+        //強制
+        fun showForcibly(activity: Activity) {
+            WelcomeHelper(activity, Welcome::class.java).forceShow()
+        }
     }
 
     override fun configuration(): WelcomeConfiguration {
