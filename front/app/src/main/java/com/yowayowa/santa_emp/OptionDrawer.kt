@@ -2,6 +2,7 @@ package com.yowayowa.santa_emp
 
 import android.Manifest
 import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
@@ -27,8 +28,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.appcompat.app.AlertDialog
+import com.google.android.gms.maps.model.*
+import java.util.*
 import com.google.android.gms.maps.model.*
 import com.yowayowa.santa_emp.Welcome.Companion.showForcibly
 import com.yowayowa.santa_emp.Welcome.Companion.showIfNeeded
@@ -104,6 +108,21 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
        }
         //showIfNeeded(this,savedInstanceState)
         showForcibly(this)
+        kokudoDialog()
+    }
+
+    private fun kokudoDialog(){
+        val alertDialog :AlertDialog.Builder = AlertDialog.Builder(this)
+        alertDialog.setIcon(R.drawable.appicon)   //アイコン設定
+            .setTitle("許可申請")      //タイトル設定
+            .setMessage("国土交通省に許可を得ましたか")  //内容(メッセージ)設定
+            .setPositiveButton("いいえ"){ dialog, which ->
+                Toast.makeText(applicationContext,"地上を走行します。飛行は不可能です。",Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("はい"){ dialog, which ->
+                Toast.makeText(applicationContext,"飛行を許可されています",Toast.LENGTH_SHORT).show()
+            }
+            .show()
     }
 
 
