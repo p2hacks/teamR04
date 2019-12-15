@@ -4,14 +4,15 @@ import send
 import servo
 
 def main():
-    while true:
-        try:
-            res = send.get_status()
-            print(res.json()['status'])
-            if res.json()['status'] == 'go':
-                servo.down()
-	except:
-            sleep(1)
+	while True:
+		try:
+			res = send.get_status()
+			print(res.json()['status'])
+			if res.json()['status'] == 'go':
+				servo.down()
+		except:
+			sleep(1)
+			continue
 
 if __name__ == '__main__':
 	servo.release()

@@ -3,7 +3,7 @@ Description = client-server
 After = network.target
 
 [Service]
-ExecStart = python3 /opt/script/server.py
+ExecStart = sudo python3 /opt/script/client.py
 Restart = always
 Type = simple
 User = pi
