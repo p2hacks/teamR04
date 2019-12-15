@@ -23,19 +23,18 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.maps.model.*
 import java.util.*
+import com.google.android.gms.maps.model.*
+import com.yowayowa.santa_emp.Welcome.Companion.showIfNeeded
 
 class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
 
@@ -106,6 +105,7 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
            }
            true
        }
+        showIfNeeded(this,savedInstanceState)
         kokudoDialog()
     }
 
@@ -116,7 +116,6 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
             .setMessage("hoge")  //内容(メッセージ)設定
             .setPositiveButton("OK"){ dialog, which -> }
             .show()
-
     }
 
 
@@ -244,14 +243,14 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
     }
 
     fun Valus(){
-        val service = createService().create(API_Interface.API_Valus::class.java)
+        val service = createService().create(API_Interface.API_valus::class.java)
         service.API()
-            .enqueue(object : Callback<Boolean?> {
-                override fun onResponse(call: Call<Boolean?>, response: Response<Boolean?>) {
+            .enqueue(object : Callback<waitorGoClass?> {
+                override fun onResponse(call: Call<waitorGoClass?>, response: Response<waitorGoClass?>) {
                     if(response.isSuccessful){
                         var ticker = response.body()
                         if(ticker != null) {
-                            if (ticker){
+                            if (ticker.status){
                                 Toast.makeText(applicationContext,"return GO.",Toast.LENGTH_SHORT).show()
                             }else{
                                 Toast.makeText(applicationContext,"return WAIT.",Toast.LENGTH_SHORT).show()
@@ -262,7 +261,7 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
                     }
                 }
 
-                override fun onFailure(call: Call<Boolean?>, t: Throwable) {
+                override fun onFailure(call: Call<waitorGoClass?>, t: Throwable) {
                     Toast.makeText(applicationContext,"エラー.",Toast.LENGTH_SHORT).show()
                 }
             } )
@@ -280,13 +279,19 @@ class OptionDrawer : AppCompatActivity() , OnMapReadyCallback {
 
     //childLocatesに格納された位置情報らをピンとして配置する
     fun addChildrenMarker(){
+        //アイコン設定用
+        //独自ピンイラストのリサイズ処理
+        var b:Bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.housepin)
+        var smallMarker:Bitmap = Bitmap.createScaledBitmap(b,60,100,false)
+        val icon:BitmapDescriptor = BitmapDescriptorFactory.fromBitmap(smallMarker)
+
         for (item in childLocates){
             val lati = item.latitude
             val log = item.longitude
             Log.d("Atria",lati.toString())
             Log.d("Atria",log.toString())
             val tmp = LatLng(item.latitude.toDouble(),item.longitude.toDouble())
-            mMap.addMarker(MarkerOptions().position(tmp).title(item.id.toString()))
+            mMap.addMarker(MarkerOptions().position(tmp).title(item.id.toString()).icon(icon))
         }
     }
 }
