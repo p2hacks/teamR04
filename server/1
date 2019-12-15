@@ -1,8 +1,10 @@
+import json
 import sqlite3
-from flask import Flask, request, jsonify
+from flask import Flask, request
 import ast
 import func
-import json
+
+SERVER_URL = 'get_json'
 
 app = Flask(__name__)
 @app.route('/set_info', methods=['POST'])
@@ -29,8 +31,9 @@ def get_from_app():
 	conn = sqlite3.connect('./db/raspi.db')
 	c = conn.cursor()
 	query = c.execute('''
-	SELECT id, latitude, longitude
-	FROM raspi 
+	SELECT id, latitude, longitude 
+	FROM raspi
+	WHERE status = 'wait'
 	''')
 	query = tuple(query)
 	data = []
@@ -54,46 +57,26 @@ def down_servo():
 def valus():
 	conn  = sqlite3.connect('./db/raspi.db')
 	c = conn.cursor()
+	num = c.execute('')
 	targets = c.execute('''
 	SELECT id
 	FROM raspi
-	WHERE status = 'wait'
+	WHERE status = wait
 	''')
 	targets = tuple(targets)
-	print(targets)
-	for i,target in enumerate(targets):
-		func.down(c, target)
-		print(i,target)
-	conn.commit()
+	for target in targets:
+		func,down(c, target)
 	conn.close()
-	return jsonify(status='false')
+	return 'Valus'
 
 @app.route('/status', methods=['POST'])
 def return_status_to_hard():
 	conn = sqlite3.connect('./db/raspi.db')
 	c = conn.cursor()
-	mac_address = request.get_data().decode('utf-8')
-	print(type(mac_address),mac_address)
-	mac = (mac_address,)
-	print(mac)
-	res = func.return_status(c, mac)
-	return jsonify(status=res[0])
+	mac_address = (request.get_data(),)
+	res = func.return_status(c, mac_address)
+	return res
 
-@app.route('/set', methods=['GET'])
-def set():
-	#json_dict = json.loads(request.data)
-	#json_dict = ast.literal_eval(json_dict)
-	conn = sqlite3.connect('./db/raspi.db')
-	c = conn.cursor()
-	#If there's not table
-	try:
-		func.create_table(c)
-	except:
-		pass
-	func.insert_data(c)
-	conn.commit()
-	conn.close()
-	return 'POST'
 
 
 if __name__ == '__main__':
