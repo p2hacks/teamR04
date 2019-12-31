@@ -49,7 +49,6 @@ def down(c, ids):
 	WHERE id = ?
 	''', ids)
 	query = tuple(query)
-	print(query)
 
 def return_status(c, mac):
 	query = c.execute('''
@@ -58,7 +57,6 @@ def return_status(c, mac):
 	WHERE mac_address = ?
 	''',mac)
 	query = tuple(query)
-	print(type(query))
 	return query
 
 def set_wait():

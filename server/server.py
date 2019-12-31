@@ -13,6 +13,7 @@ def set_from_hard():
 	c = conn.cursor()
 	#If there's not table
 	try:
+		print('table is none. created new table')
 		func.create_table(c)
 	except:
 		pass
@@ -63,7 +64,6 @@ def valus():
 	print(targets)
 	for i,target in enumerate(targets):
 		func.down(c, target)
-		print(i,target)
 	conn.commit()
 	conn.close()
 	return jsonify(status='false')
@@ -73,11 +73,14 @@ def return_status_to_hard():
 	conn = sqlite3.connect('./db/raspi.db')
 	c = conn.cursor()
 	mac_address = request.get_data().decode('utf-8')
-	print(type(mac_address),mac_address)
 	mac = (mac_address,)
-	print(mac)
 	res = func.return_status(c, mac)
-	return jsonify(status=res[0])
+	#return jsonify(status='go')
+	try:
+		data = res[0]
+		return jsonify(status=res[0])
+	except:
+		return jsonify(status='wait')
 
 @app.route('/set', methods=['GET'])
 def set():
